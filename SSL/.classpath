@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/protocol/classes"/>
+	<classpathentry kind="src" path="src/testcode"/>
+	<classpathentry kind="src" path="src/spotadaptation"/>
+	<classpathentry excluding="com/sun/midp/ssl/SCCS/" kind="src" path="src/ssl/reference/classes"/>
+	<classpathentry excluding="com/sun/midp/pki/SCCS/|javax/microedition/pki/SCCS/" kind="src" path="src/pki/reference/classes"/>
+	<classpathentry excluding="com/sun/midp/publickeystore/SCCS/" kind="src" path="src/publickeystore/reference/classes"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spotwithsensorboard_head"/>
+	<classpathentry kind="lib" path="C:/SunSPOT/sdk-head/lib/cryptolib_rt.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

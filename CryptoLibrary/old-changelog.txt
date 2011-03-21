@@ -1,0 +1,147 @@
+06/09/22 Christian Puhringer 
+	Added basic support for SECP256R1 and SECP192R1 elliptic curves.
+	No fast reduction was implemented, therefore it is very slow. 
+	Additional tests added. 
+06/09/15 Christian Puhringer (CVS tag: satsa)
+Moved implementation specific classes from com.sun.spot.security 
+and com.sun.spot.crypto to com.sun.spot.security.implementation
+respectively com.sun.spotx.crypto.implementation.
+
+06/09/14  Christian Puhringer
+Stripped down MutableBigInteger and BigInteger and
+merged into ModuloExponentiation class.
+-06/09/13  Christian Puhringer
+Merged Michael Wurm's crypto library with cougar MIDP code
+and adapted according to SATSA specification. Replaced 
+native modulo exponentiation by using BigInteger
+and MutableBigInteger from CDC class library.
+
+com.sun.spot.security:
+	DigestException
+		OK
+	GeneralSecurityException
+		OK
+	InvalidAlgorithmParameterException
+		OK
+	InvalidKeyException
+		OK
+	Key (copied javadoc from spec)
+	   OK
+	KeyException (changed super class from CryptoException to GeneralSecurityException)
+		OK
+	NoSuchAlgorithm
+		OK
+	PublicKey (Replaced javadoc with spec javadoc)
+		OK
+	PrivateKey
+		OK (Not in spec)
+	SignatureException
+		OK
+	MessageDigest
+		Replaced (incorrect) update javadoc with javadoc from spec. 
+		clone,  getAlgorithm, and getDigestLength   not part of specification
+		  OK
+	Signature
+		Replaced initVerify javadoc with spec javadoc
+		Replaced update javadoc with spec javadoc. (adding a "and signing")
+		Added a warning to the javadoc of methods not in the spec		
+		sign, initSign, getAlgorithm, and getLength not part of specification
+		Difference to SATSA
+			Some methods should be final
+			However, the class itself should be abstract. Strange.
+			Perhaps revisit the javadoc of the two sign methods. => ignore this
+	KeyFactory (Perhaps just skip this)
+	 (		Added
+		Additional method generatePrivate added (not in spec)
+		add supported key factories to getInstance() (Perhaps just skip this) )
+		Removed from lib
+			
+com.sun.spot.security.spec:
+	AlgorithmParameterSpec  (moved from com.sun.spot.security)
+		 OK
+	InvalidKeySpecException
+		OK
+	KeySpec
+		Added. (it is just an empty interface, javadoc copied from spec)
+		OK	
+	(EncodedKeySpec 
+		Added
+		OK
+	X509EncodedKeySpec 
+		Added
+		Supposed to support privates key as well in difference to spec
+		TODO: add javadoc for private key (really?)
+	) => REMOVED	
+	MD5 (not in spec)		
+	SHA (not in spec)
+	SecureRandom (not in spec)
+	PseudoRand (not in spec) (move?)
+com.sun.spotx.crypto
+	Moved from com.sun.spot.security:
+		BadPaddingException
+		IllegalBlockSizeException
+		NoSuchPaddingException
+		ShortBufferException (and removed reference to no algorithm found in javadoc, 
+				this info is also in the spec, but doesn't make sense for the exception)
+		OK	
+	Cipher
+		Copied class javadoc from specification
+		Made member methods final, by using new CipherSpi
+		
+	CipherSpi (newly created, not in spec)		
+	RsaMd5Sig (not in spec)
+	RsaShaSig (not in spec)
+	RSASig (not in spec)
+	Changed to packet private, to hide in javadoc. (similar 
+	TODO: reconsider the three rsa signature classes	they should be, and whether they 
+		can be merged into one class. 
+
+	ECDSASignature
+		Replaced KeyPair references. (by just using two separate keys)
+		Direct access to key fields replaced by getter calls
+	ECDSAWithMD5Signature
+	ECDSAWithSHA1Signature
+	TODO: reconsider the 3 ECDSA classes where they should be, and whether they 
+		can be merged into one class. 
+	
+com.sun.spotx.crypto.spec
+	 IvParameterSpec 
+	 		Renamed IvParamer copied from com.sun.spot.security
+	 		Changed superclass from CryptoParameter to AlgorithmParameterSpec
+	 		(This means the class now differes from midp cougar)
+	SecretKeySpec
+			Renamed SecretKey
+			Replaced class javadoc with javadoc from spec.
+			Replaced constructor javadoc with javadoc from spec. (only slightly different).
+				
+
+com.sun.spot.satsa (Implementation, not part of spec)
+	Util  (from cougar)
+		Merged methods from HexEncoding.java
+	FFA moved from com.sun.spot.security.ECC
+	PrimeField moved from com.sun.spot.security.ECC
+	FiniteField moved from com.sun.spot.security.ECC
+	Alg1 
+		Changed to extend CipherSpi instead of Cipher
+		TODO: Update shouldn't throw exception if datasize!=blocksize, only final should
+	Alg2 
+		Changed to extend CipherSpi instead of Cipher
+	RSA 
+		Changed to extend CipherSpi instead of Cipher
+	RSAKey
+	RSAPublicKey
+	 RSAPrivateKey	 
+	 ECKeyImp
+	 	Added SECP160R1 constant (from KeyPair)
+	 ECPrivateKeyImpl
+	 ECPublicKeyImpl
+		 Added getECPoint() method	 
+	 ECDHKeyAgreement
+	 	Changed Exceptions
+	 KeyAgreement
+	 	Changed exceptions
+	 	Changed getInstance(byte, boolean)  to  getInstance(String)
+	 	
+	 	
+
+	

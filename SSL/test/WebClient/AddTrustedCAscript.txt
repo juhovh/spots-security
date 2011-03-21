@@ -1,0 +1,17 @@
+#!/bin/sh
+# http://www.verisign.com/repository/hierarchy/hierarchy.pdf
+
+ANTARGS=$1
+
+CA_LIST="equifaxSecureCA verisignClass3PubPrimCA verisignRSASecSvrCA"
+#CA_LIST="verisignRSASecSvrCA"
+for CA in $CA_LIST
+do
+	echo "Adding $CA ..."
+	echo ant $ANTARGS -Dnickname=$CA -Dcert=Certs/$CA.der -DtrustFlags=w addtrustedkey
+	ant $ANTARGS -Dnickname=$CA -Dcert=Certs/$CA.der -DtrustFlags=w addtrustedkey
+done
+
+echo "Listing trusted keys ..."
+ant $ANTARGS listtrustedkeys
+

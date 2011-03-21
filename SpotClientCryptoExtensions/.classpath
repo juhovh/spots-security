@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/spotclient"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/desktop_signing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CryptoLibrarySATSA"/>
+	<classpathentry kind="var" path="ARM9_INSTALL/lib/squawk_common.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/spotlib"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

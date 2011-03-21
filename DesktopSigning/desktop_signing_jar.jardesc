@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+<jar path="C:/SunSPOT/dev/lib/desktop_signing.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/desktop_signing/desktop_signing_jar.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+<refactoring structuralOnly="false"/>
+<selectedProjects>
+<project name="desktop_signing"/>
+</selectedProjects>
+<manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+<sealing sealJar="false">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="false" exportJavaFiles="false" exportOutputFolder="true">
+<javaElement handleIdentifier="=desktop_signing"/>
+</selectedElements>
+</jardesc>

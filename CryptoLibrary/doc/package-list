@@ -1,0 +1,7 @@
+com.sun.spot.security
+com.sun.spot.security.implementation
+com.sun.spot.security.implementation.ecc
+com.sun.spot.security.spec
+com.sun.spotx.crypto
+com.sun.spotx.crypto.implementation
+com.sun.spotx.crypto.spec

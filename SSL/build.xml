@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * Copyright 2005-2008 Sun Microsystems, Inc. All Rights Reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+ * 
+ * This code is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * only, as published by the Free Software Foundation.
+ * 
+ * This code is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License version 2 for more details (a copy is
+ * included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU General Public License
+ * version 2 along with this work; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ * 
+ * Please contact Sun Microsystems, Inc., 16 Network Circle, Menlo
+ * Park, CA 94025 or visit www.sun.com if you need additional
+ * information or have any questions.
+ */
+-->
+
+<project default="jar-app" basedir="." name="ssl">
+
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+
+    <!--
+    
+    The master build file lives at: ${sunspot.home}/build.xml.
+
+    If you do not have a Sun Spot properties file for some reason,
+    then you can set the sunspot.home property manually.
+
+        <property name="sunspot.home" value="/opt/sunspot"/>
+
+    The behavior of the build is also controled through properties.
+    For example, to use a different source directory, you can set
+    the property 'src.dir'.
+
+        <property name="src.dir" value="mysrc"/>
+
+    For a complete listing of properties that are used, and their
+    explanations, see the file ${sunspot.home}/default.properties.
+
+    -->
+
+    <property name="user.properties.file" value="build.properties"/>
+    <property file="${user.home}/.sunspot.properties"/>
+    <import file="${sunspot.home}/build.xml"/>
+
+    <!--
+
+    This file imports the master build file for compiling and deploying sunspot
+    applications.  This file provides hooks for the user build file, so that
+    you can accomplish almost anything without having to rewrite any of the
+    build procedures.  However, if need be, you can just look at the imported
+    build file to determine how exactly any step is accomplished.
+
+    Of course, another useful way to find out exactly what is happening is to
+    run the targets listed below with ant's 'verbose' flag (ant -v).  This will
+    display exactly what is happening at each step.
+
+    The important targets that are defined within the master build file are:
+
+      init:                  initialize and check all properties
+      help:                  display useful a help message
+      clean:                 delete all compiled/generated files
+      compile:               compiles java source files to classes
+      compile-single:        (used by IDEs) compiles all files in ${javac.includes}
+      test:                  run the java classes on the emulator software
+      suite:                 builds a suite suitable for deployment
+      deploy:                deploy the application to a spot
+      debug-deploy:          deploy the debug version of your application
+      run:                   connect to a device and watch the application
+      debug:                 connect to a device and debug the application
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are defined as follows:
+
+        For each target above (except help),
+
+        -pre-<target>:  called before the target
+        -post-<target>: called after the target
+
+    For example, inserting an echo statement after compilation could look like this:
+
+        <target name="-post-compile">
+            <echo>Compile finished!</echo>
+        </target>    
+
+    For more information on using ant, see http://ant.apache.org.
+
+    --> 
+
+        <property name="doc.dir" value="doc"/>
+        <target name="javadoc">
+        <delete dir="${doc.dir}"/>
+        <mkdir dir="${doc.dir}"/>
+        <javadoc destdir="${doc.dir}"
+                 author="true"
+                 sourcepath="src/ssl/reference/classes:src:src/protocol/classes"
+                 overview="overview.html"
+                 packagenames="com.sun.midp.ssl,com.sun,javax.microedition.io"
+                 windowtitle="SPOT SSL"
+                 doctitle="SPOT SSL" >
+            <classpath path="${sunspot.lib}/crypto_common.jar:${sunspot.lib}/transducerlib_rt.jar:${sunspot.lib}/spotlib_device.jar:${sunspot.lib}/spotlib
+_common.jar:${sunspot.lib}/squawk_rt.jar" />
+            <header><![CDATA[<b>SPOT SSL code <br>v1.0</b>]]></header>
+            <bottom><![CDATA[<center><font size="-1"><i>Copyright &#169; 2006 Sun Microsystems, Inc. All Rights Reserved.
+</i></font></center>]]></bottom>
+        </javadoc>
+        </target>
+</project>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * Copyright 2005-2008 Sun Microsystems, Inc. All Rights Reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+ * 
+ * This code is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * only, as published by the Free Software Foundation.
+ * 
+ * This code is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License version 2 for more details (a copy is
+ * included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU General Public License
+ * version 2 along with this work; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ * 
+ * Please contact Sun Microsystems, Inc., 16 Network Circle, Menlo
+ * Park, CA 94025 or visit www.sun.com if you need additional
+ * information or have any questions.
+ */
+-->
+
+<project default="jar-app" basedir="." name="CryptoLib">
+
+<!--
+	This sample build.xml demonstrates the process of building a Spot
+	library containing user extensions.
+-->
+
+	<!-- Set the name of the standard user properties file -->
+    <property name="user.properties.file" value="build.properties"/>
+
+    <!-- Include the user's properties file -->
+    <property file="${user.home}/.sunspot.properties"/>
+    
+    <!-- These two lines ensure that the content of the library will be all the 
+    source code found in the src sub-directory here plus the compiled code of the 
+    standard Spot library, found in spotlib_rt.jar.
+    
+    Changing the suitecreator.prefixes variable will limit the code that gets
+    included, for example the value "com.sun. adder." would limit the library to 
+    just classes from those two packages and their sub-packages, and other classes
+    referenced from those. This would not normally be useful. -->
+    <property name="suitecreator.prefixes" value=""/>
+
+  <!-- These two lines ensure that the content of the library will be all the 
+    source code found in the src sub-directory here plus the compiled code of the 
+    standard Spot library, found in spotlib_device.jar and spotlib_common.jar, and
+    the transducer library, found in transducerlib_rt.jar. -->
+    <property name="user.classpath" value="${sunspot.lib}/spotlib_device.jar;${sunspot.lib}/spotlib_common.jar;${sunspot.lib}/transducerlib_rt.jar"/>
+  
+    <!-- Include additionally all the class files from spotlib_rt.jar (this
+    corresponds to the entire contents of the "standard" library suite) -->
+    
+    <!-- Include the standard build script -->
+    <import file="${sunspot.home}/build.xml"/>
+
+    <!--
+    packagenames="com.sun.spot.security,
+        com.sun.spot.security.implementation,
+        com.sun.spot.security.implementation.ecc,
+        javax.microedition.pki,
+        com.sun.spot.security.spec"
+   -->
+
+    <target name="javadoc" depends="init">
+        <property name="doc.dir" value="doc" />
+        <fail unless="doc.dir">Must set doc.dir</fail>
+        <javadoc
+            packagenames="com.sun.spot.security,javax.microedition.pki"
+            sourcepath="${src.dir}"
+            destdir="${doc.dir}"
+            use="true"
+            author="false"
+            version="true"
+        />
+    </target>
+</project>

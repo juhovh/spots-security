@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+
+  @(#)package.html	1.60 98/01/27
+
+  Copyright 1998 Sun Microsystems, Inc. 901 San Antonio Road, 
+  Palo Alto, California, 94303, U.S.A.  All Rights Reserved.
+
+  This software is the confidential and proprietary information of Sun
+  Microsystems, Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered into
+  with Sun.
+
+  CopyrightVersion 1.2
+
+-->
+</head>
+<body bgcolor="white">
+
+This is the Sun SPOT crypto library. It partially implements the SATSA 1.0 (JSR 177)  specification.
+<h2> Optional SATSA packages</h2>
+<h3>Supported</h3>
+<ul><li>SATSA-CRYPTO Optional Packags<br>
+The optional package SATSA-CRYPTO is a subset of the Java 2 platform, Standard
+Edition (J2SE) Cryptography API. When this optional package&nbsp;is implemented
+on a CDC/FP based platform that already supports some of the classes in
+this optional package, the whole API is the union of the API&nbsp;in the
+CDC/FP and the API&nbsp;in the SATSA-CRYPTO&nbsp;optional package.<br>
+This package is partially supported. See <a href="#differences">Differences to SATSA</a> for details.</li></ul>
+
+<p>
+<h3> Not supported</h3>
+  <ul>
+        <li>SATSA-APDU</li>
+        <li>SATSA-JCRMI</li>
+        <li>SATSA-PKI</li>
+	</ul>
+	
+<h2>Implemented algorithms</h2>
+<h3>Ciphers</h3>
+<ul>
+    <li>AES<br>ECB, CBC modes, no padding</li>
+    <li>RC4</li>
+    <li>RSA<br>slow, it is recommended to use ECC KeyAgreement + Symmetric Cipher instead.</li>
+ </ul>
+  
+<h3>Message digest</h3>
+<ul>
+   <li>SHA-1</li>
+    <li>MD5</li>
+ </ul>
+
+<h3>Signature</h3>
+	<ul>
+   <li>Elliptic curve digital signature algorithm (ECDSA)<br>
+        <code>SHA1WITHECDSA</code>,<code>MD5WITHECDSA</code></li>
+    <li>RSA (slow, use ECC instead if possible, in particular for private key operations)<br>
+        <code>SHA1WITHRSA</code>, MD5WITHRSA</code></li>
+   </ul>
+<h2>Algorithm Details</h2>
+<h3>Elliptic curve cryptography (ECC)</h3>
+    The elliptic curve algorithms only supports SECP160R1 which is defined over a 160-bit NIST prime fields.
+    Other elliptic curves, prime field sizes or general reduction primes are not supported, respectively without 
+    fast reduction implementation, which makes them very slow (SECP192R1, SECP256R1). To make these 
+    fesable to use, or  to add additional  curves over NIST prime field, the according modulo reduction must be 
+    implemented, as it is done in NIST160PrimeField.java for the currently supported field.
+<h3>RSA</RSA></h3>
+    The RSA crypto is not very well  suited for small devices like the Sun SPOTs. It is only included
+    for compatibility with existing systems (like https servers), instead ECC should be used. RSA is in particular
+    slow for private key operations like signing, while its performance is acceptable for public key operations, if
+    a small exponent is used, which is usually the case.<p>
+    The basic arithmetic operation which determines RSA performance  is modulo exponentiation. The implementation
+    uses a stripped down version of the CDC BigInteger and MutableBigInteger class. Although the size of the modulo
+    exponentiation class could be significantly reduced by removing all functionality not required in RSA, it still accounts
+    for a significant share of the library size, namely  about 12 kByte of the 95 kByte library suite file size.<p>
+    For applications were the size of the library is critical, and the RSA performance is not important, for example
+    because ECC is used instead,  it may make sense
+    to remove the com.sun.spotx.crypto.implementation.ModuloExponentiation class and to change the
+    com.sun.spotx.crypto.implementation.RSA class to use the  class method modExpFFA instead. This reduces
+    the size of the library by using a much simpler, and much slower modulo exponentiation algorithm. The performance hit is higher
+    for larger exponents, which makes it infeasible to use the simple algorithm for private key operations (~10 minutes in
+    comparison to ~20 s with the default algorithm for a 1024-bit exponent). For small exponents, as commonly used
+    for public  key operations, the performance hit still high although  smaller (~0.5s in comparison to 10s for a 16-bit exponent.)
+<p>
+
+<h2><a name="differences"></a>Differences to SATSA</h2>
+<ul>
+    <li>Package names<br>
+        Not using the <code>java.*</code> but <code>spot.*</code>. This is primarily for compliance reasons, as the crypto library doesn't support SATSA entirely.
+        Furthermore  it allows the use of the library in host applications, while using the <code>java.*</code> package name wouldn't work.</li>
+   <li><code>KeyFactory</code> and <code>KeySpec</code>s not supported<br>
+        In difference to SATSA does the SPOT crypto library not differentiate     between opaque keys of type <code>Key</code>  and transparent
+        key specifications. KeyGenerator would be required to convert KeySpecs to opaque keys and thus is not used.<br>>
+        This also implies that X509 encoded are not supported, and the keys have to be created in an algorithm dependent manner.
+        This only applies to asymmetric keys. In the case of  symmetric keys, even the SATSA specification  combines the opaque key and the transparent
+        specification in one class, which is called SecretKeySpec.</li>
+   <li><code>Signature</code><br>
+        Signing is supported. In SATSA a separate class <code>CMSMessageSignatureService</code>
+        is used for signing instead. To simplify the interface to the crypto library instead signing support was added to the Signature class, which
+        is also consistent with the JCE.<br>
+        In the SATSA specification the Signature class is defined as abstract, while all methods are final. As there is not direct benefit with this and
+        the class is not SATSA compliant anyway, the methods were not made final but were kept abstract.</li>
+   <li><code>PrivateKey</code><br>
+        SATSA only defines a <code>PublicKey</code> class, to support <code>SignatureSign.sign()</code> in a consistent manner and for general 
+        consistency a <codePrivateKey</code> interface was added.</li>
+    <li><code>java.lang.UnsupportedOperationException</code> not supported</li>
+    <li>Support of <code>KeyAgreement</code><br>
+        The Sun SPOT crypto library supports key agreement with elliptic curve keys. To do this  the class <code>KeyAgreement</code> was added to the com.sun.spotx.crypto
+        package was added.
+      </ul></li>
+       
+<h2>Interoperability with  MIDP SSL</h2>
+    The Sun SPOT crypto library was tested with the SSL reference liberation in MIDP (cougar). This interoperability was actually
+    one of the main design goals, which also leaded to  the decision to implement the SATSA specification, which is used by the SSL
+    code. The SSL code  has same special dependencies on the implementation of the crypto library, mainly on the implementation of
+    keys. This has been considered when modifying the crypto library, except that SecretKey was removed, as it is equivalent to
+    <code>SecretKeySpec</code> defined by the SATSA specification. Thus references to <code>SecretKey</code> in the SSL code have
+    to be replaced by <code>SecretKeySpec</code>.
+    Furthermore the package names are different, as neither the Sun SPOT crypto  library nor the MIDP crypto library use the names defined
+    by the SATSA specification.
+ <h2>Implementation Details</h2>
+This crypto library is based on the  previous Sun SPOT crypto library and the  MIDP cougar code. MIDP itself
+follows for the most part the SATSA specification, while the previous Sun SPOT crypto library
+uses the  javacard interface.<p>These two libraries where merged together and adapted according to the SATSA
+specification. Most algorithm implementations, including ECC, originate from the previous Sun SPOT crypto library, while some implementations,
+in particular, RSA originate from the MIDP code. The MIDP RSA implementation used a native modulo exponentiation algorithm,
+which was replaced by a stripped down version of <code>BigInteger</code> and <code>MutableBigInteger</code> from the Java CDC
+class library.
+<p>
+The <code>test</code> package contains JUnit tests to allow testing of the library.
+ 
+</body>
+</html>

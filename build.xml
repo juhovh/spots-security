@@ -1,0 +1,23 @@
+<project name="spots-security" basedir="." default="help">
+
+  <target name="help"/>
+
+  <target name="build-addon-jars" description="Build spots-security library add on jars into ${sdk}/lib">
+    <ant dir="CryptoLibrary" target="jar-app"/>
+    <ant dir="SSL" target="jar-app"/>
+  </target>
+
+  <target name="clean-addon-jars" description="Clean up all projects defining spots-security library add on jars">
+    <ant dir="CryptoLibrary" target="clean"/>
+    <ant dir="SSL" target="clean"/>
+  </target>
+
+  <target name="buildAddOnTools" description="Clean up all projects defining spots-security library add on jars">
+    <ant dir="SpotClientCryptoExtensions" target="make-jars"/>
+  </target>
+
+  <target name="cleanAddOnTools" description="Clean up all projects defining spots-security library add on jars">
+    <ant dir="SpotClientCryptoExtensions" target="clean"/>
+  </target>
+
+</project>
