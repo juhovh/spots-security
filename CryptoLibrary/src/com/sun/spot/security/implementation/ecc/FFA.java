@@ -642,7 +642,8 @@ public final class FFA {
         
         while (cmp(a, b) >= 0) {
             aBits = bitLength(a);
-            aLen = (aBits / 28) + 1;
+            aLen = (aBits + 27) / 28;
+
             if (subShifted(a, b, aBits - bBits, aLen) == 1) {
                 addShifted(a, b, aBits - bBits - 1, aLen);
             }
