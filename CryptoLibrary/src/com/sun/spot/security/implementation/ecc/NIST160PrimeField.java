@@ -85,13 +85,7 @@ public final class NIST160PrimeField extends PrimeField {
         }
         
         // if r >= prime then r -= prime
-        if ((r[5] >= 0x000fffff)
-         && (r[4] >= 0x0fffffff)
-         && (r[3] >= 0x0fffffff)
-         && (r[2] >= 0x0fffffff)
-         && (r[1] >= 0x0ffffff7)
-         && (r[0] >= 0x0fffffff)) {
-             
+        if (ffa.cmp(r, p) >= 0) {
             m  = r[0] + 0x00000001; r[0] = m & BMASK; m >>= 28;
             m += r[1] + 0x00000008; r[1] = m & BMASK; m >>= 28;
             if (m > 0) {
@@ -102,5 +96,4 @@ public final class NIST160PrimeField extends PrimeField {
             }
         }
     }
-    
 }
