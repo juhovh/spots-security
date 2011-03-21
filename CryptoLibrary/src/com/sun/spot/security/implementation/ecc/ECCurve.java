@@ -133,11 +133,11 @@ public abstract class ECCurve {
      
     public static final int SECP160R1 = 0;
     public static final int SECP192R1 = 1;
-    
     public static final int SECP256R1 = 2;
+    public static final int SECP224R1 = 3;
     
 
-    private static final int MAX_CURVES = 3;
+    private static final int MAX_CURVES = 4;
     private static ECCurve[] instances = new ECCurve[MAX_CURVES];
     
     synchronized public static ECCurve getInstance(int curveId) {
@@ -181,6 +181,21 @@ public abstract class ECCurve {
        	                        ffa.from( "64210519E59C80E70FA7E9AB72243049FEB8DEECC146B9B1"),
        	                        ffa.from( "188DA80EB03090F67CBF20EB43A18800F4FF0AFD82FF1012"),
        	                        ffa.from( "07192B95FFC8DA78631011ED6B24CDD573F977A11E794811"),
+                                order, 1
+       	                    );
+                break;
+            }
+            case SECP224R1: {
+                ffa = new FFA(224);
+                FFA orderFFA = new FFA(224);
+                order = new PrimeField(orderFFA, orderFFA.from("FFFFFFFFFFFFFFFFFFFFFFFFFFFF16A2E0B8F03E13DD29455C5C2A3D"));
+       	        curve = new ECCurveFp(
+       	                        new NIST224PrimeField(ffa),
+       	                        //new PrimeField(ffa,ffa.from("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000001")),
+       	                        ffa.from( "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFE"),
+       	                        ffa.from( "B4050A850C04B3ABF54132565044B0B7D7BFD8BA270B39432355FFB4"),
+       	                        ffa.from( "B70E0CBD6BB4BF7F321390B94A03C1D356C21122343280D6115C1D21"),
+       	                        ffa.from( "BD376388B5F723FB4C22DFE6CD4375A05A07476444D5819985007E34"),
                                 order, 1
        	                    );
                 break;

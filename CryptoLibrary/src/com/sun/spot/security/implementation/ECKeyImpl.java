@@ -36,7 +36,17 @@ public abstract class ECKeyImpl implements Key {
      * Named Elliptic Curve over a Prime Field: "<code>secp160r1</code>"
      */
     public static final int SECP160R1 = 0;
-    
+
+    /**
+     * Named Elliptic Curve over a Prime Field: "<code>secp192r1</code>"
+     */
+    public static final int SECP192R1 = 1;
+
+    /**
+     * Named Elliptic Curve over a Prime Field: "<code>secp224r1</code>"
+     */
+    public static final int SECP224R1 = 3;
+
     /** Key size in bits, e.g. for RSA, this is modulus size. */
     protected int bitsize; 
     protected int bytesize;

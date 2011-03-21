@@ -75,8 +75,12 @@ public final class ECPrivateKeyImpl extends ECKeyImpl implements PrivateKey {
         try {
             int curveId = this.getCurve();
             val += "CurveId: ";
-            if (curveId == 0) 
+            if (curveId == 0)
                 val += "secp160r1";
+            if (curveId == 1)
+                val += "secp192r1";
+            if (curveId == 3)
+                val += "secp224r1";
             else
                 val += curveId;
             byte[] sval = new byte[((this.getSize() + 7) >>> 3) + 3];
